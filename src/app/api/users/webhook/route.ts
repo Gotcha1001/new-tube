@@ -152,12 +152,14 @@ export async function POST(req: Request) {
         data.email_addresses?.[0]?.email_address ||
         "User";
 
-      await db.insert(users).values({
-        clerkId: data.id,
-        name: userName,
-        imageUrl: data.image_url,
-      });
-
+      await db
+        .insert(users)
+        .values({
+          clerkId: data.id,
+          name: userName,
+          imageUrl: data.image_url,
+        })
+        .onConflictDoNothing(); // Add this
       console.log("✅ User created successfully");
     }
 
